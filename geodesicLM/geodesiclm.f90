@@ -3,7 +3,7 @@
 ! Main Geodesic-Bold-BroydenUpdate-Levenberg-Marquardt routine
 ! version 1.0
 
-SUBROUTINE geodesicLM(func, jacobian, Avv, &
+SUBROUTINE geodesiclm(func, jacobian, Avv, &
      & x, fvec, fjac, n, m, &
      & callback, info, &
      & analytic_jac, analytic_Avv, &
@@ -45,9 +45,9 @@ SUBROUTINE geodesicLM(func, jacobian, Avv, &
 !
 !    The subroutine statement is:
 !
-!    geodesicLM(func, jacobian, Av, x, fvec, jac, n, m, callback, info,
+!    geodesicLM(func, jacobian, Avv, x, fvec, fjac, n, m, callback, info,
 !              analytic_jac, analytic_Avv, center_diff, h1, h2,
-!              dtd, mode, niteres, nfev, njev, naev,
+!              dtd, damp_mode, niteres, nfev, njev, naev,
 !              maxiters, maxfev, maxjev, maxaev, maxlam, minlam,
 !              artol, Cgoal, gtol, xtol, xrtol, ftol, frtol,
 !              converged, print_level, print_unit,
@@ -145,7 +145,7 @@ SUBROUTINE geodesicLM(func, jacobian, Avv, &
 !    of the directional second derivative.
 !
 !    dtd a double precision array of dimension(n,n).  dtd is used as the damping matrix in the 
-!    Levenberg-Marquardt routine.  It's exact treatment is specified by the mode input.
+!    Levenberg-Marquardt routine.  It's exact treatment is specified by the damp_mode input.
 !
 !    damp_mode an input integer specifying the details of the LM damping as follows:
 !      damp_mode = 0: dtd is set to the identity.
@@ -223,6 +223,7 @@ SUBROUTINE geodesicLM(func, jacobian, Avv, &
 !    imethod an input integer specifying the method for updating the LM parameter
 !      imethod = 0: adjusted by fixed factors after accepted/rejected steps
 !      imethod = 1: adjusted as described in Nielson
+!      imethod = 2: adjusted according to an unpublished method due to Cyrus Umrigar and Peter Nightingal
 !      imethod = 10: step size Delta adjusted by fixed factors after accepted/rejected steps
 !      imethod = 11: step size adjusted as described in More'
 !
@@ -269,7 +270,25 @@ SUBROUTINE geodesicLM(func, jacobian, Avv, &
   REAL (KIND=8) temp1, temp2, pred_red, dirder, actred, rho, a_param
   INTEGER i, j, istep, accepted, counter
   
+  character(16) :: converged_info(-11:7)
   LOGICAL jac_uptodate, jac_force_update, valid_result
+
+  ! strings for concluding print statement
+  converged_info = '????????'
+  converged_info(1) = 'artol reached'
+  converged_info(2) = 'Cgoal reached'
+  converged_info(3) = 'gtol reached'
+  converged_info(4) = 'xtol reached'
+  converged_info(5) = 'xrtol reached'
+  converged_info(6) = 'ftol reached'
+  converged_info(7) = 'frtol reached'
+  converged_info(-1) = 'maxiters exeeded'
+  converged_info(-2) = 'maxfev exceeded'
+  converged_info(-3) = 'maxjev exceeded'
+  converged_info(-4) = 'maxaev exceeded'
+  converged_info(-10) = 'User Termination '
+  converged_info(-11) = 'NaN Produced'
+
   IF(print_level .GE. 1) THEN
      WRITE(print_unit, *) "Optimizing with Geodesic-Levenberg-Marquardt algorithm, version 1.0"
      WRITE(print_unit, *) "Method Details:"
@@ -621,7 +640,7 @@ SUBROUTINE geodesicLM(func, jacobian, Avv, &
   IF(print_level .GE. 1) THEN
      WRITE(print_unit,*) "Optimization finished"
      WRITE(print_unit,*) "Results:"
-     WRITE(print_unit,*) "  Converged:  ", converged
+     WRITE(print_unit,*) "  Converged:    ", converged_info(converged), converged
      WRITE(print_unit,*) "  Final Cost: ", 0.5d+0*DOT_PRODUCT(fvec,fvec)
      WRITE(print_unit,*) "  Cost/DOF: ", 0.5d+0*DOT_PRODUCT(fvec,fvec)/(m-n)
      WRITE(print_unit,*) "  niters:     ", istep

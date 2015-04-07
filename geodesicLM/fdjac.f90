@@ -5,7 +5,7 @@
 SUBROUTINE FDJAC(m,n,x,fvec,fjac,func,eps,center_diff)
   IMPLICIT NONE
   INTEGER m,n, i
-  REAL (KIND=8) x(n), dx(n), fvec(n), fjac(m,n), eps, epsmach, dpmpar
+  REAL (KIND=8) x(n), dx(n), fvec(m), fjac(m,n), eps, epsmach, dpmpar
   LOGICAL center_diff
   REAL (KIND=8) h, temp1(m), temp2(m) 
   

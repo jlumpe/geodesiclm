@@ -4,7 +4,7 @@ Geodesic Levenberg-Marquardt is a variant of Levenberg-Marquardt that adds third
 
 The method makes use of the BLAS and LAPACK subroutines for matrix manipulation.  You should link to these libraries when compiling.
 
-Although we have used this routine successfully in our own research, we do not guarantee that it is bug free.  If you encounter a bug (or an unexpected behavior) please let us know.  Send details about the bug to Mark Transtrum: mkt26@cornell.edu.  
+Although we have used this routine successfully in our own research, we do not guarantee that it is bug free.  If you encounter a bug (or an unexpected behavior) please let us know.  Send details about the bug to Mark Transtrum: mktranstrum@byu.edu
 
 If you use this code, please acknowledge such by referencing one one of the following papers in any published work:
     

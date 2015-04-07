@@ -15,3 +15,6 @@ This generates a file (_geodesiclm.pyd on windows or _geodesiclm.so on unix).  P
 Sometimes, it is also necessary to link to the gfortran library:
 
 f2py -c leastsq.pyf -Lpath_to_libgeodesiclm.a -lgeodesiclm  -Lpath_to_lapack -llapack -Lpath_to_blas -lblas -lgfortran
+
+numpy often has its own library of lapack.  To see what is available type
+f2py --help-link lapack
