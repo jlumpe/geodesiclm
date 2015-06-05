@@ -1,5 +1,8 @@
 module GeodesicLM
 
+const geodesiclmlib = string(Pkg.dir(), "/GeodesicLM/builds/libgeodesiclm.so")
+
+
 ## Dictionary of convergence messages
 converged_msg = { 1=>"artol", 2=>"CGoal", 3=>"gtol", 4=>"xtol", 5=>"xrtol", 6=>"ftol", 7=>"frtol", -1=>"iters", -2=>"nfev", -3=>"njev", -4=>"naev", -5=>"maxlam", -6=>"minlam", -10=>"user_termination", -11=>"func_fail"}
 
@@ -52,7 +55,7 @@ function geodesiclm(func::Function, x::Array{Float64}, m::Integer, n::Integer;
     naev = [convert(Int32, 0)]
     converged = [convert(Int32,0)]
     
-    ccall( (:geodesiclm_, "./libgeodesiclm.so"), Void, 
+    ccall( (:geodesiclm_, geodesiclmlib), Void, 
           (Ptr{Void}, Ptr{Void}, Ptr{Void}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}, Ptr{Int32}, Ptr{Int32}, Ptr{Void}, Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}, Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}, Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}), 
     func_f, jacobian_f, Avv_f, x, fvec, fjac, &convert(Int32, n), &convert(Int32, m), callback_f, info,
     &analytic_jac, &analytic_avv, &center_diff, &h1, &h2, dtd, &convert(Int32, damp_mode), 
