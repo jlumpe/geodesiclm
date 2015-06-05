@@ -16,7 +16,7 @@ function Avv(x, v)
 end
 
 ## Define functions that have signature compatible with geodesiclm
-function func(m_::Ptr{Int64}, n_::Ptr{Int64}, x_::Ptr{Float64}, fvec_::Ptr{Float64})
+function func(m_::Ptr{Int32}, n_::Ptr{Int32}, x_::Ptr{Float64}, fvec_::Ptr{Float64})
     m = unsafe_load(m_)
     n = unsafe_load(n_)
     x = pointer_to_array(x_, (n,))
@@ -25,7 +25,7 @@ function func(m_::Ptr{Int64}, n_::Ptr{Int64}, x_::Ptr{Float64}, fvec_::Ptr{Float
     return convert(Cint, 1)
 end
 
-function jacobian(m_::Ptr{Int64}, n_::Ptr{Int64}, x_::Ptr{Float64}, fjac_::Ptr{Float64})
+function jacobian(m_::Ptr{Int32}, n_::Ptr{Int32}, x_::Ptr{Float64}, fjac_::Ptr{Float64})
     m = unsafe_load(m_)
     n = unsafe_load(n_)
     x = pointer_to_array(x_, (n,))
@@ -34,7 +34,7 @@ function jacobian(m_::Ptr{Int64}, n_::Ptr{Int64}, x_::Ptr{Float64}, fjac_::Ptr{F
     return convert(Cint, 1)
 end
 
-function Avv_(m_::Ptr{Int64}, n_::Ptr{Int64}, x_::Ptr{Float64}, v_::Ptr{Float64}, acc_::Ptr{Float64})
+function Avv_(m_::Ptr{Int32}, n_::Ptr{Int32}, x_::Ptr{Float64}, v_::Ptr{Float64}, acc_::Ptr{Float64})
     m = unsafe_load(m_)
     n = unsafe_load(n_)
     x = pointer_to_array(x_, (n,))
@@ -48,6 +48,7 @@ end
 
 x, info = GeodesicLM.geodesiclm(func, [-2.0, 4.0], 2, 2, iaccel = 1, jacobian = jacobian, Avv = Avv_)
 println("x = $x")
+println("""msg = $(info["msg"])""")
 fvec = info["fvec"]
 println("Final Cost = $(sum(fvec.*fvec)/2)")
 
