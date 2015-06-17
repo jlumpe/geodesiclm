@@ -11,42 +11,13 @@ function j(x)
     return [ -1.0 0.0; -20.0*x[1] 10.0]
 end
 
-function Avv(x, v)
+function avv(x, v)
     return [0.0, -20.0*v[1]^2]
-end
-
-## Define functions that have signature compatible with geodesiclm
-function func(m_::Ptr{Int32}, n_::Ptr{Int32}, x_::Ptr{Float64}, fvec_::Ptr{Float64})
-    m = unsafe_load(m_)
-    n = unsafe_load(n_)
-    x = pointer_to_array(x_, (n,))
-    fvec = pointer_to_array(fvec_,(m,))
-    fvec[:] = r(x)
-    return convert(Cint, 1)
-end
-
-function jacobian(m_::Ptr{Int32}, n_::Ptr{Int32}, x_::Ptr{Float64}, fjac_::Ptr{Float64})
-    m = unsafe_load(m_)
-    n = unsafe_load(n_)
-    x = pointer_to_array(x_, (n,))
-    fjac = pointer_to_array(fjac_,(m,n))
-    fjac[:,:] = j(x)
-    return convert(Cint, 1)
-end
-
-function Avv_(m_::Ptr{Int32}, n_::Ptr{Int32}, x_::Ptr{Float64}, v_::Ptr{Float64}, acc_::Ptr{Float64})
-    m = unsafe_load(m_)
-    n = unsafe_load(n_)
-    x = pointer_to_array(x_, (n,))
-    v = pointer_to_array(v_, (n,))
-    acc = pointer_to_array(acc_,(m,))
-    acc[:] = Avv(x, v)
-    return convert(Cint, 1)
 end
 
 ## Call the wrapper and get informtion about the fit
 
-x, info = GeodesicLM.geodesiclm(func, [-2.0, 4.0], 2, 2, iaccel = 1, jacobian = jacobian, Avv = Avv_)
+x, info = GeodesicLM.geodesiclm(r, [-2.0, 4.0], 2, 2)
 println("x = $x")
 println("""msg = $(info["msg"])""")
 fvec = info["fvec"]
