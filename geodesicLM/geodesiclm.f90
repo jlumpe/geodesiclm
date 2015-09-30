@@ -296,6 +296,7 @@ SUBROUTINE geodesiclm(func, jacobian, Avv, &
      WRITE(print_unit, *) "  acceleration:    ", iaccel
      WRITE(print_unit, *) "  Bold method:     ", ibold
      WRITE(print_unit, *) "  Broyden updates: ", ibroyden
+     FLUSH(print_unit)
   ENDIF
 
   !! Initialize variables
@@ -318,6 +319,7 @@ SUBROUTINE geodesiclm(func, jacobian, Avv, &
   C = 0.5d+0*DOT_PRODUCT(fvec,fvec)
   IF(print_level .GE. 1) THEN
      WRITE(print_unit, *) "  Initial Cost:    ", C
+     FLUSH(print_unit)
   ENDIF
   valid_result = .TRUE.
   !! Check for nans in fvec
@@ -597,10 +599,12 @@ SUBROUTINE geodesiclm(func, jacobian, Avv, &
         WRITE(print_unit, *) "  istep, nfev, njev, naev, accepted", istep, nfev, njev, naev, accepted
         WRITE(print_unit, *) "  Cost, lam, delta", C, lam, delta
         WRITE(print_unit, *) "  av, cos alpha", av, cos_alpha
+        FLUSH(print_unit)
      ELSEIF(print_level .EQ. 3) THEN
         WRITE(print_unit, *) "  istep, nfev, njev, naev, accepted", istep, nfev, njev, naev, accepted
         WRITE(print_unit, *) "  Cost, lam, delta", C, lam, delta
         WRITE(print_unit, *) "  av, cos alpha", av, cos_alpha
+        FLUSH(print_unit)
      ENDIF
      IF (print_level .EQ. 4 .AND. accepted .GT. 0) THEN
         WRITE(print_unit, *) "  istep, nfev, njev, naev, accepted", istep, nfev, njev, naev, accepted
@@ -609,6 +613,7 @@ SUBROUTINE geodesiclm(func, jacobian, Avv, &
         WRITE(print_unit, *) "  x = ", x
         WRITE(print_unit, *) "  v = ", v
         WRITE(print_unit, *) "  a = ", a
+        FLUSH(print_unit)
      ELSEIF (print_level .EQ. 5) THEN
         WRITE(print_unit, *) "  istep, nfev, njev, naev, accepted", istep, nfev, njev, naev, accepted
         WRITE(print_unit, *) "  Cost, lam, delta", C, lam, delta
@@ -616,6 +621,7 @@ SUBROUTINE geodesiclm(func, jacobian, Avv, &
         WRITE(print_unit, *) "  x = ", x
         WRITE(print_unit, *) "  v = ", v
         WRITE(print_unit, *) "  a = ", a
+        FLUSH(print_unit)
      ENDIF
 
      ! If converged -- return
@@ -647,6 +653,7 @@ SUBROUTINE geodesiclm(func, jacobian, Avv, &
      WRITE(print_unit,*) "  nfev:       ", nfev
      WRITE(print_unit,*) "  njev:       ", njev
      WRITE(print_unit,*) "  naev:       ", naev
+     FLUSH(print_unit)
   ENDIF
 
 END SUBROUTINE geodesiclm
