@@ -1,7 +1,7 @@
 ! -*- f90 -*-
 ! file leastsq.f90
 ! Main Geodesic-Bold-BroydenUpdate-Levenberg-Marquardt routine
-! version 1.0
+! version 1.1
 
 SUBROUTINE geodesiclm(func, jacobian, Avv, &
      & x, fvec, fjac, n, m, &
@@ -290,7 +290,7 @@ SUBROUTINE geodesiclm(func, jacobian, Avv, &
   converged_info(-11) = 'NaN Produced'
 
   IF(print_level .GE. 1) THEN
-     WRITE(print_unit, *) "Optimizing with Geodesic-Levenberg-Marquardt algorithm, version 1.0"
+     WRITE(print_unit, *) "Optimizing with Geodesic-Levenberg-Marquardt algorithm, version 1.1"
      WRITE(print_unit, *) "Method Details:"
      WRITE(print_unit, *) "  Update method:   ", imethod
      WRITE(print_unit, *) "  acceleration:    ", iaccel
@@ -509,7 +509,7 @@ SUBROUTINE geodesiclm(func, jacobian, Avv, &
         ! Calcualte the predicted reduction and the directional derivative -- useful for updating lam methods
         temp1 = 0.5d+0*DOT_PRODUCT(v,MATMUL(jtj, v))/C
         temp2 = 0.5d+0*lam*DOT_PRODUCT(v,MATMUL(dtd,v))/C
-        pred_red = 2.0d+0*(temp1 + temp2)        
+        pred_red = temp1 + 2.0d+0*temp2
         dirder = -1.0d+0*(temp1 + temp2)
         ! calculate cos_alpha -- cos of angle between step direction (in data space) and residual vector
         cos_alpha = ABS(DOT_PRODUCT(fvec, MATMUL(fjac, v)))
