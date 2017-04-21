@@ -1,7 +1,7 @@
 ! -*- f90 -*-
 ! file leastsq.f90
 ! Main Geodesic-Bold-BroydenUpdate-Levenberg-Marquardt routine
-! version 1.1
+! version 1.2
 
 SUBROUTINE geodesiclm(func, jacobian, Avv, &
      & x, fvec, fjac, n, m, &
@@ -290,7 +290,7 @@ SUBROUTINE geodesiclm(func, jacobian, Avv, &
   converged_info(-11) = 'NaN Produced'
 
   IF(print_level .GE. 1) THEN
-     WRITE(print_unit, *) "Optimizing with Geodesic-Levenberg-Marquardt algorithm, version 1.1"
+     WRITE(print_unit, *) "Optimizing with Geodesic-Levenberg-Marquardt algorithm, version 1.2"
      WRITE(print_unit, *) "Method Details:"
      WRITE(print_unit, *) "  Update method:   ", imethod
      WRITE(print_unit, *) "  acceleration:    ", iaccel
