@@ -49,10 +49,10 @@ SUBROUTINE Updatelam_nelson(lam, accepted, factoraccept, factorreject, rho)
   INTEGER accepted, i
   DOUBLE PRECISION lam, factoraccept, factorreject, nu, rho
   IF(accepted.GE.0) THEN
-     lam = lam * MAX( 1.0d+0/factoraccept, 1.0d+0 - (2.0d+0*(rho - 0.5d+0))**3 )
+     lam = lam * MAX( 1.0d+0/factoraccept, 1.0d+0 - (factorreject - 1.0d+0)*(2.0d+0*rho - 1.0d+0)**3 )
   ELSE
      nu = factorreject
-     DO i = 1,-1*accepted !! double nu for each rejection
+     DO i = 2,-1*accepted !! double nu for each rejection
         nu = nu*2.0d+0
      END DO
      lam = lam * nu
