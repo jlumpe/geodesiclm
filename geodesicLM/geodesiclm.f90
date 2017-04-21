@@ -484,7 +484,7 @@ SUBROUTINE geodesiclm(func, jacobian, Avv, &
               CALL TrustRegion(n,m,fvec, fjac, dtd, delta, lam)
            CASE(11)
               !! Update delta as described in More' reference
-              CALL UpdateDelta_more(delta, lam, n, x, dtd, rho, C, Cnew, dirder, actred, av, avmax)
+              CALL UpdateDelta_more(delta, lam, n, v, dtd, rho, C, Cnew, dirder, actred, av, avmax)
               CALL TrustRegion(n,m,fvec, fjac, dtd, delta, lam)
            END SELECT
         ENDIF

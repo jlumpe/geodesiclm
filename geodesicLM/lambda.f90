@@ -130,12 +130,12 @@ SUBROUTINE Updatedelta_factor(delta, accepted, factoraccept, factorreject)
   ENDIF
 END SUBROUTINE Updatedelta_factor
 
-SUBROUTINE Updatedelta_more(delta, lam, n, x, dtd, rho, C, Cnew, dirder, actred, av, avmax)
+SUBROUTINE Updatedelta_more(delta, lam, n, v, dtd, rho, C, Cnew, dirder, actred, av, avmax)
   IMPLICIT NONE
   INTEGER n
-  DOUBLE PRECISION delta, lam, x(n), dtd(n,n), rho, C, Cnew, dirder, actred, av, avmax
+  DOUBLE PRECISION delta, lam, v(n), dtd(n,n), rho, C, Cnew, dirder, actred, av, avmax
   DOUBLE PRECISION pnorm, temp
-  pnorm = SQRT(DOT_PRODUCT(x,MATMUL(dtd, x)))
+  pnorm = SQRT(DOT_PRODUCT(v,MATMUL(dtd, v)))
   IF (rho .GT. 0.25d+0) THEN
      IF (lam .GT. 0.0d+0 .AND. rho .LT. 0.75d+0) THEN
         temp = 1.0d+0
@@ -150,7 +150,7 @@ SUBROUTINE Updatedelta_more(delta, lam, n, x, dtd, rho, C, Cnew, dirder, actred,
      END IF
      IF ( 0.01*Cnew .GE. C .OR. temp .LT. 0.1d+0) temp = 0.1d+0
   END IF
-  !! We need to make sure that if acceleration is too big, we decrease teh step size
+  !! We need to make sure that if acceleration is too big, we decrease the step size
   IF (av .GT. avmax) THEN
      temp = MIN(temp,MAX(avmax/av,0.1d+0))
   END IF
